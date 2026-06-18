@@ -1,6 +1,6 @@
 # HTTP Server & Middleware
 
-Server HTTP dengan `http.HandleFunc`, custom mux via `http.NewServeMux`, middleware pattern (logging wrapper), dan JSON response.
+Server HTTP dengan **Fiber** (`github.com/gofiber/fiber/v2`) — routing, middleware logging, JSON response, dan route grouping. Fiber adalah web framework Express-like untuk Go.
 
 ## Cara Menjalankan
 

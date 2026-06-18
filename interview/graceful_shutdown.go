@@ -3,44 +3,42 @@
 package main
 
 import (
-	"context"
-	"fmt"
 	"log"
-	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 // slowHandler mensimulasikan long-running request (sleep 3 detik).
-func slowHandler(w http.ResponseWriter, r *http.Request) {
+func slowHandler(c *fiber.Ctx) error {
 	log.Println("[slow] Menerima request — mulai proses 3 detik")
+
+	// Simulasi kerja 3 detik
 	select {
 	case <-time.After(3 * time.Second):
-		fmt.Fprintln(w, "Selesai setelah 3 detik")
 		log.Println("[slow] Request selesai")
-	case <-r.Context().Done():
-		// Client disconnect — lebih cepat cleanup
+		return c.SendString("Selesai setelah 3 detik")
+	case <-c.Context().Done():
 		log.Println("[slow] Request dibatalkan (client disconnect)")
-		http.Error(w, "request cancelled", http.StatusRequestTimeout)
+		return c.Status(fiber.StatusRequestTimeout).SendString("request cancelled")
 	}
 }
 
 // healthHandler untuk readiness probe.
-func healthHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "OK")
+func healthHandler(c *fiber.Ctx) error {
+	return c.SendString("OK")
 }
 
 func main() {
-	mux := http.NewServeMux()
-	mux.HandleFunc("/slow", slowHandler)
-	mux.HandleFunc("/health", healthHandler)
+	app := fiber.New(fiber.Config{
+		AppName: "GoTrick Graceful Shutdown Demo",
+	})
 
-	server := &http.Server{
-		Addr:    ":8080",
-		Handler: mux,
-	}
+	app.Get("/slow", slowHandler)
+	app.Get("/health", healthHandler)
 
 	// Channel untuk menangkap sinyal OS
 	quit := make(chan os.Signal, 1)
@@ -48,27 +46,22 @@ func main() {
 
 	// Jalankan server di goroutine terpisah
 	go func() {
-		log.Println("Server started on :8080")
-		log.Println("Cara test: curl http://localhost:8080/slow lalu Ctrl+C")
-		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Fatalf("Server error: %v", err)
+		log.Println("Server Fiber started on :8080")
+		log.Println("Cara test:")
+		log.Println("  1. curl http://localhost:8080/slow")
+		log.Println("  2. Langsung Ctrl+C — server tunggu /slow selesai")
+		if err := app.Listen(":8080"); err != nil {
+			log.Printf("Server error: %v", err)
 		}
 	}()
 
 	// Blokir sampai sinyal diterima
 	sig := <-quit
-	log.Printf("Menerima sinyal: %v. Memulai shutdown...", sig)
+	log.Printf("Menerima sinyal: %v. Memulai graceful shutdown...", sig)
 
-	// Beri waktu 30 detik untuk request yang sedang berlangsung
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-	defer cancel()
-
-	if err := server.Shutdown(ctx); err != nil {
-		log.Printf("Shutdown error: %v. Force close...", err)
-		// Jika timeout, panggil Close() untuk force stop
-		if closeErr := server.Close(); closeErr != nil {
-			log.Printf("Close error: %v", closeErr)
-		}
+	// Fiber ShutdownWithTimeout: tunggu request ongoing selesai, maksimal 30 detik
+	if err := app.ShutdownWithTimeout(30 * time.Second); err != nil {
+		log.Printf("Shutdown error: %v", err)
 	}
 
 	log.Println("Server shutdown selesai. Bye.")

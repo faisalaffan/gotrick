@@ -1,7 +1,7 @@
 //go:build !http_server && !http_client && !json && !context_usage && !sync_primitives && !io_bufio && !time_pkg
 
-// Package stdlib berisi contoh-contoh penggunaan Go standard library: net/http,
-// encoding/json, context, sync, io, bufio, time.
+// Package stdlib berisi contoh-contoh penggunaan Go standard library dan Fiber:
+// Fiber HTTP framework, encoding/json, context, sync, io, bufio, time.
 //
 // Setiap file memiliki build tag sendiri. Jalankan dengan:
 //
@@ -25,7 +25,7 @@ func main() {
 	fmt.Println()
 	fmt.Println("Gunakan build tag untuk menjalankan contoh spesifik:")
 	fmt.Println()
-	fmt.Println("  go run -tags=http_server     ./stdlib/   # HTTP server + middleware")
+	fmt.Println("  go run -tags=http_server     ./stdlib/   # Fiber HTTP server + middleware")
 	fmt.Println("  go run -tags=http_client     ./stdlib/   # HTTP client + timeout")
 	fmt.Println("  go run -tags=json            ./stdlib/   # JSON marshal/unmarshal")
 	fmt.Println("  go run -tags=context_usage   ./stdlib/   # Context patterns")
