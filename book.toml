@@ -1,0 +1,12 @@
+[book]
+authors = ["Muhammad Faisal Affan"]
+language = "id"
+title = "GoTrick — Latihan Go untuk Backend & Fintech"
+src = "book"
+
+[build]
+build-dir = "book-html"
+
+[output.html]
+git-repository-url = "https://github.com/faisalaffan/gotrick"
+edit-url-template = "https://github.com/faisalaffan/gotrick/edit/main/{path}"
