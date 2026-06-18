@@ -1,0 +1,62 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "GoTrick: Debug (pilih tag)",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "program": "${fileDirname}",
+            "buildFlags": "-tags=${input:buildTag}",
+            "showLog": true
+        }
+    ],
+    "inputs": [
+        {
+            "id": "buildTag",
+            "type": "pickString",
+            "description": "Pilih build tag",
+            "options": [
+                "--- Fundamentals ---",
+                "types",
+                "structs",
+                "interfaces",
+                "errors",
+                "goroutines",
+                "defer_panic",
+                "--- Standard Library ---",
+                "http_server",
+                "http_client",
+                "json",
+                "context_usage",
+                "sync_primitives",
+                "io_bufio",
+                "time_pkg",
+                "--- Concurrency ---",
+                "worker_pool",
+                "fan_out_fan_in",
+                "pipeline",
+                "select_pattern",
+                "atomic_vs_mutex",
+                "race_demo",
+                "--- Idiomatic ---",
+                "embedding",
+                "functional_options",
+                "error_wrapping",
+                "--- Performance ---",
+                "profiling_demo",
+                "escape_analysis",
+                "--- Networking ---",
+                "http_retry",
+                "server",
+                "client",
+                "--- Interview ---",
+                "transfer",
+                "rate_limiter",
+                "graceful_shutdown",
+                "retry_backoff",
+                "idempotency"
+            ]
+        }
+    ]
+}

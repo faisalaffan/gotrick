@@ -1,0 +1,13 @@
+{
+    "go.buildTags": "",
+    "go.testTags": "",
+    "go.lintTool": "golangci-lint",
+    "go.lintOnSave": "workspace",
+    "go.useLanguageServer": true,
+    "[go]": {
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        }
+    }
+}
