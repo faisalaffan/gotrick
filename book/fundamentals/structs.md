@@ -10,4 +10,6 @@ go run -tags=structs ./fundamentals/
 
 ## Source Code
 
+```go
 {{#include ../../fundamentals/structs.go}}
+```

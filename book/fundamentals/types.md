@@ -10,4 +10,6 @@ go run -tags=types ./fundamentals/
 
 ## Source Code
 
+```go
 {{#include ../../fundamentals/main.go}}
+```

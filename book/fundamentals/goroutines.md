@@ -10,4 +10,6 @@ go run -tags=goroutines ./fundamentals/
 
 ## Source Code
 
+```go
 {{#include ../../fundamentals/goroutines.go}}
+```

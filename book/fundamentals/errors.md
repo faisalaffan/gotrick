@@ -10,4 +10,6 @@ go run -tags=errors ./fundamentals/
 
 ## Source Code
 
+```go
 {{#include ../../fundamentals/errors.go}}
+```

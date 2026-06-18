@@ -10,4 +10,6 @@ go run -tags=interfaces ./fundamentals/
 
 ## Source Code
 
+```go
 {{#include ../../fundamentals/interfaces.go}}
+```

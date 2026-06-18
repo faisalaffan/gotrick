@@ -10,4 +10,6 @@ go run -tags=defer_panic ./fundamentals/
 
 ## Source Code
 
+```go
 {{#include ../../fundamentals/defer_panic.go}}
+```
