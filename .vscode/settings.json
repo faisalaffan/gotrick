@@ -1,6 +1,6 @@
 {
-    "go.buildTags": "",
-    "go.testTags": "",
+    "go.buildTags": "defer_panic,errors,goroutines,interfaces,types,structs,atomic_vs_mutex,fan_out_fan_in,pipeline,race_demo,select_pattern,worker_pool,context_usage,http_client,http_server,io_bufio,json,sync_primitives,time_pkg,embedding,error_wrapping,functional_options,graceful_shutdown,idempotency,rate_limiter,retry_backoff,transfer,escape_analysis,profiling_demo,http_retry",
+    "go.testTags": "defer_panic,errors,goroutines,interfaces,types,structs,atomic_vs_mutex,fan_out_fan_in,pipeline,race_demo,select_pattern,worker_pool,context_usage,http_client,http_server,io_bufio,json,sync_primitives,time_pkg,embedding,error_wrapping,functional_options,graceful_shutdown,idempotency,rate_limiter,retry_backoff,transfer,escape_analysis,profiling_demo,http_retry",
     "go.lintTool": "golangci-lint",
     "go.lintOnSave": "workspace",
     "go.useLanguageServer": true,
