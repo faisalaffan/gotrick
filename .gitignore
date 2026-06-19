@@ -18,3 +18,7 @@ Icon
 .com.apple.timemachine.donotpresent
 book-html/
 theme/
+
+# Go build artifacts
+fundamentals/types/types
+fundamentals/structs/structs
