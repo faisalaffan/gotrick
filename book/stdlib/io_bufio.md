@@ -5,7 +5,7 @@ Custom `io.Reader` implementation, `io.Copy`, `bufio.Scanner` (baca baris), `buf
 ## Cara Menjalankan
 
 ```bash
-go run ./stdlib/io_bufio/ ./stdlib/
+go run ./stdlib/io_bufio/
 ```
 
 ## Source Code

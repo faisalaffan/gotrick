@@ -5,7 +5,7 @@
 ## Cara Menjalankan
 
 ```bash
-go run ./concurrency/select_pattern/ ./concurrency/
+go run ./concurrency/select_pattern/
 ```
 
 ## Source Code

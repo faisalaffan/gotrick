@@ -5,7 +5,7 @@
 ## Cara Menjalankan
 
 ```bash
-go run ./concurrency/atomic_vs_mutex/ ./concurrency/
+go run ./concurrency/atomic_vs_mutex/
 ```
 
 ## Source Code

@@ -5,7 +5,7 @@ Fan-out: satu producer mendistribusikan data ke banyak worker channel. Fan-in: m
 ## Cara Menjalankan
 
 ```bash
-go run ./concurrency/fan_out_fan_in/ ./concurrency/
+go run ./concurrency/fan_out_fan_in/
 ```
 
 ## Source Code

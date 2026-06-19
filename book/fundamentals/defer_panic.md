@@ -5,7 +5,7 @@
 ## Cara Menjalankan
 
 ```bash
-go run ./fundamentals/defer_panic/ ./fundamentals/
+go run ./fundamentals/defer_panic/
 ```
 
 ## Source Code

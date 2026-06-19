@@ -5,7 +5,7 @@ Retry pattern dengan exponential backoff menggunakan `math.Pow(2, attempt)` untu
 ## Cara Menjalankan
 
 ```bash
-go run ./interview/retry_backoff/ ./interview/
+go run ./interview/retry_backoff/
 ```
 
 ## Source Code

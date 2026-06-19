@@ -5,7 +5,7 @@ Rate limiter dengan algoritma Token Bucket. Token ditambahkan secara periodik be
 ## Cara Menjalankan
 
 ```bash
-go run ./interview/rate_limiter/ ./interview/
+go run ./interview/rate_limiter/
 ```
 
 ## Source Code

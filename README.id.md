@@ -42,7 +42,7 @@ GoTrick adalah kumpulan contoh kode Go yang dirancang untuk backend engineer yan
 | Bagian | Topik | File |
 |--------|-------|------|
 | **Fundamentals** | Types, zero values, pointer, structs, interfaces, errors, goroutines, channels, defer, panic, recover | 6 |
-| **Standard Library** | Fiber HTTP, JSON, context, sync primitives, I/O, bufio, time | 7 |
+| **Standard Library** | Gin HTTP, JSON, context, sync primitives, I/O, bufio, time | 7 |
 | **Concurrency** | Worker pool, fan-out/fan-in, pipeline, select, atomic vs mutex, race condition | 6 |
 | **Idiomatic Go** | Embedding, functional options, error wrapping, table-driven test | 4 |
 | **Performance** | Benchmark, pprof profiling, escape analysis | 3 |

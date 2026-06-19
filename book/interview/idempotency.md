@@ -5,7 +5,7 @@ Idempotency memastikan operasi dengan key yang sama hanya dieksekusi sekali. Pat
 ## Cara Menjalankan
 
 ```bash
-go run ./interview/idempotency/ ./interview/
+go run ./interview/idempotency/
 ```
 
 ## Source Code

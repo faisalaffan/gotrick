@@ -5,7 +5,7 @@ GET dengan `http.DefaultClient`, custom client dengan timeout, `http.NewRequestW
 ## Cara Menjalankan
 
 ```bash
-go run ./stdlib/httpclient/ ./stdlib/
+go run ./stdlib/httpclient/
 ```
 
 ## Source Code

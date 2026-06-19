@@ -5,7 +5,7 @@ Struct adalah tipe data bentukan yang mengelompokkan field-field terkait. Method
 ## Cara Menjalankan
 
 ```bash
-go run ./fundamentals/structs/ ./fundamentals/
+go run ./fundamentals/structs/
 ```
 
 ## Source Code

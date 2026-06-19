@@ -5,7 +5,7 @@ Demonstrasi race condition -- multiple goroutine increment shared counter tanpa 
 ## Cara Menjalankan
 
 ```bash
-go run ./concurrency/race_demo/ ./concurrency/
+go run ./concurrency/race_demo/
 ```
 
 ## Source Code

@@ -5,7 +5,7 @@ Error wrapping di Go menggunakan `fmt.Errorf` dengan verb `%w` untuk membungkus 
 ## Cara Menjalankan
 
 ```bash
-go run ./idiomatic/error_wrapping/ ./idiomatic/
+go run ./idiomatic/error_wrapping/
 ```
 
 ## Source Code

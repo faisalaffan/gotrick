@@ -5,7 +5,7 @@ Bounded worker pool -- N worker goroutine mengambil job dari buffered channel, m
 ## Cara Menjalankan
 
 ```bash
-go run ./concurrency/worker_pool/ ./concurrency/
+go run ./concurrency/worker_pool/
 ```
 
 ## Source Code

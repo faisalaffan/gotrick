@@ -5,7 +5,7 @@ Multi-stage pipeline dengan channels. Stage 1 generate numbers, Stage 2 mengkuad
 ## Cara Menjalankan
 
 ```bash
-go run ./concurrency/pipeline/ ./concurrency/
+go run ./concurrency/pipeline/
 ```
 
 ## Source Code

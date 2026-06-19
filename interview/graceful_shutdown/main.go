@@ -1,8 +1,13 @@
+// Graceful shutdown dengan Gin + net/http.Server.
+// Gin pakai net/http di bawahnya — graceful shutdown via server.Shutdown().
+// Pattern ini cocok untuk production fintech.
 
 package main
 
 import (
+	"context"
 	"log"
+	"net/http"
 	"os"
 	"os/signal"
 	"sync"
@@ -10,7 +15,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/gofiber/fiber/v2"
+	"github.com/gin-gonic/gin"
 )
 
 var (
@@ -19,56 +24,66 @@ var (
 )
 
 // shutdownGuard menolak request baru saat shutting down.
-func shutdownGuard(c *fiber.Ctx) error {
+func shutdownGuard(c *gin.Context) {
 	if shuttingDown.Load() {
-		return c.Status(fiber.StatusServiceUnavailable).SendString("server shutting down — coba lagi nanti")
+		c.String(http.StatusServiceUnavailable, "server shutting down — coba lagi nanti")
+		c.Abort()
+		return
 	}
 	activeRequests.Add(1)
 	defer activeRequests.Done()
-	return c.Next()
+	c.Next()
 }
 
 // slowHandler mensimulasikan long-running request (sleep 3 detik).
-func slowHandler(c *fiber.Ctx) error {
+func slowHandler(c *gin.Context) {
 	log.Println("[slow] Menerima request — mulai proses 3 detik")
 
-	// Simulasi kerja berat 3 detik
-	time.Sleep(3 * time.Second)
-
-	log.Println("[slow] Request selesai")
-	return c.SendString("Selesai setelah 3 detik")
+	// Simulasi kerja berat 3 detik — respect context cancellation
+	select {
+	case <-time.After(3 * time.Second):
+		log.Println("[slow] Request selesai")
+		c.String(200, "Selesai setelah 3 detik")
+	case <-c.Request.Context().Done():
+		log.Println("[slow] Request dibatalkan (client disconnect)")
+		c.String(499, "request cancelled")
+	}
 }
 
 // healthHandler untuk readiness probe.
-func healthHandler(c *fiber.Ctx) error {
-	return c.SendString("OK")
+func healthHandler(c *gin.Context) {
+	c.String(200, "OK")
 }
 
 func main() {
-	app := fiber.New(fiber.Config{
-		AppName: "GoTrick Graceful Shutdown Demo",
-	})
+	router := gin.New()
+	router.Use(gin.Recovery())
 
 	// Pasang guard sebelum semua route
-	app.Use(shutdownGuard)
+	router.Use(shutdownGuard)
 
-	app.Get("/slow", slowHandler)
-	app.Get("/health", healthHandler)
+	router.GET("/slow", slowHandler)
+	router.GET("/health", healthHandler)
+
+	// Bungkus Gin router dalam http.Server agar bisa graceful shutdown
+	srv := &http.Server{
+		Addr:    ":8080",
+		Handler: router,
+	}
 
 	// Channel untuk menangkap sinyal OS
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 
-	// Jalankan server di goroutine terpisah
+	// Jalankan server di goroutine
 	go func() {
-		log.Println("Server Fiber started on :8080")
+		log.Println("Server Gin started on :8080")
 		log.Println("Cara test:")
 		log.Println("  1. curl http://localhost:8080/slow &")
-		log.Println("  2. sleep 1  (tunggu request mulai)")
-		log.Println("  3. Ctrl+C    (kirim sinyal ke server)")
-		log.Println("  → Server tunggu /slow selesai (3 detik) baru shutdown")
-		if err := app.Listen(":8080"); err != nil {
-			log.Printf("Server listen error: %v", err)
+		log.Println("  2. sleep 1")
+		log.Println("  3. Ctrl+C → server tunggu /slow selesai baru shutdown")
+		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Printf("Server error: %v", err)
 		}
 	}()
 
@@ -76,16 +91,19 @@ func main() {
 	sig := <-quit
 	log.Printf("Menerima sinyal: %v. Memulai graceful shutdown...", sig)
 
-	// Set flag agar tidak terima request baru
+	// Set flag — tolak request baru
 	shuttingDown.Store(true)
 	log.Println("Menolak request baru, menunggu request aktif selesai...")
 
-	// Tunggu semua request yang sedang berjalan selesai
+	// Tunggu semua request yang sedang berjalan
 	activeRequests.Wait()
 	log.Println("Semua request aktif selesai.")
 
-	// Sekarang aman untuk shutdown Fiber
-	if err := app.Shutdown(); err != nil {
+	// Shutdown server dengan timeout
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	if err := srv.Shutdown(ctx); err != nil {
 		log.Printf("Shutdown error: %v", err)
 	}
 

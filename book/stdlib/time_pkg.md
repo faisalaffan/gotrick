@@ -5,7 +5,7 @@
 ## Cara Menjalankan
 
 ```bash
-go run ./stdlib/time_pkg/ ./stdlib/
+go run ./stdlib/time_pkg/
 ```
 
 ## Source Code

@@ -5,7 +5,7 @@
 ## Cara Menjalankan
 
 ```bash
-go run ./stdlib/sync_primitives/ ./stdlib/
+go run ./stdlib/sync_primitives/
 ```
 
 ## Source Code

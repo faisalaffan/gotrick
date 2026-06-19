@@ -1,4 +1,3 @@
-
 package main
 
 import "fmt"
@@ -13,7 +12,7 @@ func main() {
 	var teks string
 	var bendera bool
 	fmt.Println("=== Zero Values ===")
-	fmt.Printf("int:     %d\n", angka)      // 0
+	fmt.Printf("int:     %d\n", angka)     // 0
 	fmt.Printf("float64: %.1f\n", pecahan) // 0.0
 	fmt.Printf("string:  %q\n", teks)      // "" (string kosong)
 	fmt.Printf("bool:    %t\n\n", bendera) // false
@@ -21,7 +20,7 @@ func main() {
 	// ============================================================
 	// Array vs Slice
 	// ============================================================
-	var arr [3]int               // array — fixed size
+	var arr [3]int                // array — fixed size
 	hewan := make([]string, 0, 3) // slice — dynamic
 
 	arr[0] = 10

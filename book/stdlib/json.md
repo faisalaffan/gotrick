@@ -5,7 +5,7 @@
 ## Cara Menjalankan
 
 ```bash
-go run ./stdlib/json/ ./stdlib/
+go run ./stdlib/json/
 ```
 
 ## Source Code

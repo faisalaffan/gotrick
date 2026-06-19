@@ -42,7 +42,7 @@ GoTrick is a curated collection of Go code examples designed for backend enginee
 | Section | Topics | Files |
 |---------|--------|-------|
 | **Fundamentals** | Types, zero values, pointers, structs, interfaces, errors, goroutines, channels, defer, panic, recover | 6 |
-| **Standard Library** | Fiber HTTP, JSON, context, sync primitives, I/O, bufio, time | 7 |
+| **Standard Library** | Gin HTTP, JSON, context, sync primitives, I/O, bufio, time | 7 |
 | **Concurrency** | Worker pool, fan-out/fan-in, pipeline, select, atomic vs mutex, race condition | 6 |
 | **Idiomatic Go** | Embedding, functional options, error wrapping, table-driven tests | 4 |
 | **Performance** | Benchmark, pprof profiling, escape analysis | 3 |

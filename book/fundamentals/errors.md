@@ -5,7 +5,7 @@ Error di Go direpresentasikan oleh interface `error` bawaan. `errors.New()` dan 
 ## Cara Menjalankan
 
 ```bash
-go run ./fundamentals/errors/ ./fundamentals/
+go run ./fundamentals/errors/
 ```
 
 ## Source Code

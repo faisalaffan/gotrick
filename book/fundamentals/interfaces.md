@@ -5,7 +5,7 @@ Interface di Go dideklarasikan sebagai kumpulan method signature. Satisfaction b
 ## Cara Menjalankan
 
 ```bash
-go run ./fundamentals/interfaces/ ./fundamentals/
+go run ./fundamentals/interfaces/
 ```
 
 ## Source Code

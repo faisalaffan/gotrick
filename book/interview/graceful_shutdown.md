@@ -5,7 +5,7 @@ HTTP server dengan graceful shutdown menggunakan `signal.Notify` untuk SIGINT/SI
 ## Cara Menjalankan
 
 ```bash
-go run ./interview/graceful_shutdown/ ./interview/
+go run ./interview/graceful_shutdown/
 ```
 
 Kemudian di terminal lain, test dengan curl:

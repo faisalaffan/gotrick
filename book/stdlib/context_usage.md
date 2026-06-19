@@ -5,7 +5,7 @@
 ## Cara Menjalankan
 
 ```bash
-go run ./stdlib/context_usage/ ./stdlib/
+go run ./stdlib/context_usage/
 ```
 
 ## Source Code
