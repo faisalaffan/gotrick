@@ -1,49 +1,49 @@
 // pipeline.go — Multi-Stage Pipeline
-// Stage 1: generate numbers
-// Stage 2: square numbers
-// Stage 3: print results
+// Stage 1: generate panjang sisi tanah
+// Stage 2: hitung luas tanah (sisi × sisi)
+// Stage 3: cetak hasil luas
 // Tiap stage jalan di goroutine terpisah. Channel upstream ditutup setelah selesai.
 
 package main
 
 import "fmt"
 
-// stage1 — generator: mengirim angka 1..n ke channel
-func stage1(out chan<- int, n int) {
-	for i := 1; i <= n; i++ {
-		out <- i
+// genSisi — generator: mengirim panjang sisi 1..n ke channel
+func genSisi(out chan<- int, n int) {
+	for sisi := 1; sisi <= n; sisi++ {
+		out <- sisi
 	}
 	close(out) // Selesai generate, tutup channel
 }
 
-// stage2 — square: membaca dari in, mengkuadratkan, kirim ke out
-func stage2(in <-chan int, out chan<- int) {
-	for val := range in {
-		out <- val * val
+// hitungLuas — membaca sisi dari in, menghitung luas (sisi×sisi), kirim ke out
+func hitungLuas(in <-chan int, out chan<- int) {
+	for sisi := range in {
+		out <- sisi * sisi
 	}
 	close(out)
 }
 
-// stage3 — consumer: membaca dari in dan mencetak
-func stage3(in <-chan int) {
-	for val := range in {
-		fmt.Printf("Hasil: %d\n", val)
+// cetakLuas — consumer: membaca luas dari in dan mencetak
+func cetakLuas(in <-chan int) {
+	for luas := range in {
+		fmt.Printf("Luas tanah: %d m²\n", luas)
 	}
 }
 
 func main() {
-	const n = 10
+	const jumlahTanah = 10
 
 	// Pipeline channels
-	genOut := make(chan int)
-	sqOut := make(chan int)
+	sisiOut := make(chan int)
+	luasOut := make(chan int)
 
 	// Jalankan stage di goroutine terpisah
-	go stage1(genOut, n) // producer
-	go stage2(genOut, sqOut) // middleware
-	stage3(sqOut) // consumer — jalan di main goroutine
+	go genSisi(sisiOut, jumlahTanah)   // producer
+	go hitungLuas(sisiOut, luasOut)     // middleware
+	cetakLuas(luasOut)                  // consumer — jalan di main goroutine
 
 	// Perhatikan urutan close:
-	// stage1 close(genOut) → stage2 selesai range → stage2 close(sqOut) → stage3 selesai range
-	fmt.Println("Pipeline selesai.")
+	// genSisi close(sisiOut) → hitungLuas selesai range → hitungLuas close(luasOut) → cetakLuas selesai range
+	fmt.Println("\nPipeline selesai.")
 }

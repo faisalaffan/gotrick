@@ -58,12 +58,12 @@ func (ct *CustomTime) UnmarshalJSON(data []byte) error {
 func main() {
 	// 1. Marshal — serialize struct ke JSON
 	fmt.Println("=== 1. json.Marshal ===")
-	salary := 75000.0
+	gaji := 75000.0
 	emp := Employee{
 		ID:        1,
 		Name:      "Budi Santoso",
 		Email:     "budi@example.com",
-		Salary:    &salary,
+		Salary:    &gaji,
 		Skills:    []string{"Go", "Docker", "K8s"},
 		IsActive:  true,
 		CreatedAt: CustomTime{Time: time.Now()},
@@ -120,17 +120,17 @@ func main() {
 	fmt.Println(string(data4))
 	fmt.Println("(Catatan: Salary tidak muncul karena nil)")
 
-	// 6. Unmarshal JSON array
+	// 6. Unmarshal JSON array — daftar karyawan dengan nama asli
 	fmt.Println("\n=== 6. Unmarshal JSON array ===")
 	jsonArray := `[
-		{"id":10, "name":"User A", "is_active":true, "created_at":"2025-01-01 00:00:00"},
-		{"id":11, "name":"User B", "is_active":false, "created_at":"2025-06-01 12:00:00"}
+		{"id":10, "name":"Rina Wijaya", "is_active":true, "created_at":"2025-01-01 00:00:00"},
+		{"id":11, "name":"Dimas Pratama", "is_active":false, "created_at":"2025-06-01 12:00:00"}
 	]`
-	var users []Employee
-	if err := json.Unmarshal([]byte(jsonArray), &users); err != nil {
+	var karyawan []Employee
+	if err := json.Unmarshal([]byte(jsonArray), &karyawan); err != nil {
 		panic(err)
 	}
-	for _, u := range users {
-		fmt.Printf("  - %d: %s (aktif: %t)\n", u.ID, u.Name, u.IsActive)
+	for _, k := range karyawan {
+		fmt.Printf("  - %d: %s (aktif: %t)\n", k.ID, k.Name, k.IsActive)
 	}
 }

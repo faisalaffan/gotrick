@@ -7,15 +7,15 @@ import (
 	"time"
 )
 
-// RateLimiter menerapkan algoritma Token Bucket.
+// RateLimiter menerapkan algoritma Token Bucket untuk membatasi request API.
 // Token ditambahkan secara periodik berdasarkan rate (tokens/detik).
 // Bucket memiliki kapasitas maksimum (burst).
 type RateLimiter struct {
-	rate      float64 // tokens per detik
-	burst     float64 // kapasitas maksimum bucket
-	tokens    float64 // token saat ini
+	rate       float64 // tokens per detik
+	burst      float64 // kapasitas maksimum bucket
+	tokens     float64 // token saat ini
 	lastRefill time.Time
-	mu        sync.Mutex
+	mu         sync.Mutex
 }
 
 // NewRateLimiter membuat instance RateLimiter baru.
@@ -28,7 +28,7 @@ func NewRateLimiter(rate, burst float64) *RateLimiter {
 	}
 }
 
-// Allow mengecek apakah request diizinkan.
+// Allow mengecek apakah request API diizinkan.
 // Satu token dikonsumsi per request. Jika token habis, request ditolak.
 func (rl *RateLimiter) Allow() bool {
 	rl.mu.Lock()
@@ -53,42 +53,42 @@ func (rl *RateLimiter) Allow() bool {
 }
 
 func main() {
-	// Rate limiter: 5 request per detik, burst 5
+	// Rate limiter: 5 request API per detik, burst 5
 	rl := NewRateLimiter(5, 5)
 
 	fmt.Println("=== Rate Limiter Demo ===")
-	fmt.Println("Rate: 5 request/detik, Burst: 5")
+	fmt.Println("Rate: 5 request API/detik, Burst: 5")
 	fmt.Println("Mengirim 20 request berturut-turut...")
 	fmt.Println()
 
-	allowed := 0
-	blocked := 0
+	diterima := 0
+	ditolak := 0
 
 	for i := range 20 {
 		if rl.Allow() {
-			allowed++
-			fmt.Printf("[%02d] ALLOWED  ✅\n", i+1)
+			diterima++
+			fmt.Printf("[API #%02d] DITERIMA  ✅\n", i+1)
 		} else {
-			blocked++
-			fmt.Printf("[%02d] BLOCKED  ❌\n", i+1)
+			ditolak++
+			fmt.Printf("[API #%02d] DITOLAK  ❌\n", i+1)
 		}
 	}
 
-	fmt.Printf("\nHasil: %d allowed, %d blocked (burst=5, sisanya kena rate limit)\n", allowed, blocked)
+	fmt.Printf("\nHasil: %d diterima, %d ditolak (burst=5, sisanya kena rate limit)\n", diterima, ditolak)
 	fmt.Println()
 
 	// Demonstrasi refill: tunggu 1 detik, token kembali
 	fmt.Println("Tunggu 1 detik — token direfill...")
 	time.Sleep(1 * time.Second)
 
-	allowed2 := 0
+	diterimaRefill := 0
 	for i := range 5 {
 		if rl.Allow() {
-			allowed2++
-			fmt.Printf("[refill %d] ALLOWED ✅\n", i+1)
+			diterimaRefill++
+			fmt.Printf("[refill %d] DITERIMA ✅\n", i+1)
 		} else {
-			fmt.Printf("[refill %d] BLOCKED ❌\n", i+1)
+			fmt.Printf("[refill %d] DITOLAK ❌\n", i+1)
 		}
 	}
-	fmt.Printf("\nSetelah refill 1 detik: %d allowed (seharusnya ~5)\n", allowed2)
+	fmt.Printf("\nSetelah refill 1 detik: %d diterima (seharusnya ~5)\n", diterimaRefill)
 }

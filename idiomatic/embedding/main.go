@@ -163,10 +163,10 @@ func embeddingDemo() {
 
 	// fileLog mengimplementasikan LogReadCloser (io.Reader + io.Closer).
 	fl := &fileLog{
-		reader: strings.NewReader("hello world"),
+		reader: strings.NewReader("laporan keuangan Q1 2025"),
 	}
 
-	buf := make([]byte, 5)
+	buf := make([]byte, 20)
 	n, err := fl.Read(buf)
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
@@ -182,17 +182,17 @@ func embeddingDemo() {
 	fmt.Println("\n=== METHOD PROMOTION + OVERRIDE ===")
 
 	sl := SmartLogger{
-		ConsoleLogger:    ConsoleLogger{Prefix: "APP"},
+		ConsoleLogger:    ConsoleLogger{Prefix: "TOKO"},
 		FileWriter:       &FileWriter{},
 		TimestampEnabled: true,
 	}
 
 	// Log milik SmartLogger dipanggil (override).
-	sl.Log("ini pesan dengan timestamp")
-	sl.Log("pesan lain")
+	sl.Log("order baru: Budi Santoso")
+	sl.Log("stok buku tinggal 3")
 
 	// Write ter-promote dari *FileWriter ke SmartLogger.
-	sl.Write([]byte("data dari smart logger"))
+	sl.Write([]byte("transaksi: pembayaran lunas"))
 	fmt.Printf("FileWriter content: %s\n", sl.FileWriter.Content())
 }
 

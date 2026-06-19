@@ -58,39 +58,39 @@ func (m *MyStruct) Speak() string {
 // meskipun *MyStruct nil, setelah di-assign ke Speaker,
 // interface-nya TIDAK nil karena tetap ada type info.
 func nilTrapDemo() {
-	var s *MyStruct = nil   // pointer nil bertipe *MyStruct
-	var sp Speaker = s      // interface menyimpan (*MyStruct, nil)
+	var struk *MyStruct = nil   // pointer nil bertipe *MyStruct
+	var pembicara Speaker = struk // interface menyimpan (*MyStruct, nil)
 
-	fmt.Println("s == nil:", s == nil)     // true
-	fmt.Println("sp == nil:", sp == nil)   // false — karena type info masih ada!
+	fmt.Println("struk == nil:", struk == nil)             // true
+	fmt.Println("pembicara == nil:", pembicara == nil)     // false — karena type info masih ada!
 
 	// Cara aman: cek via type assertion
-	_, ok := sp.(*MyStruct)
-	fmt.Println("sp.(*MyStruct) ok:", ok)
+	_, ok := pembicara.(*MyStruct)
+	fmt.Println("pembicara.(*MyStruct) ok:", ok)
 }
 
 func main() {
 	// Interface implicit satisfaction
 	fmt.Println("=== Interface Implisit ===")
-	var sp Speaker
-	sp = Dog{Name: "Rex"}
-	fmt.Println(sp.Speak())
-	sp = Cat{Name: "Mimi"}
-	fmt.Println(sp.Speak())
+	var pembicara Speaker
+	pembicara = Dog{Name: "Milo"}
+	fmt.Println(pembicara.Speak())
+	pembicara = Cat{Name: "Pusi"}
+	fmt.Println(pembicara.Speak())
 	fmt.Println()
 
 	// fmt.Stringer
 	fmt.Println("=== fmt.Stringer ===")
-	p := Person{Name: "Alice", Age: 30}
+	p := Person{Name: "Sari", Age: 30}
 	fmt.Println(p) // pakai String()
 	fmt.Println()
 
 	// Empty interface / any
 	fmt.Println("=== any / interface{} ===")
 	describe(42)
-	describe("hello")
+	describe("halo")
 	describe(3.14)
-	describe(Dog{Name: "Buddy"})
+	describe(Dog{Name: "Guguk"})
 	fmt.Println()
 
 	// Nil interface trap

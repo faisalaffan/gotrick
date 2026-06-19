@@ -21,9 +21,9 @@ func main() {
 
 	// 2. time.Date() — buat waktu spesifik
 	fmt.Println("\n=== 2. time.Date() ===")
-	specificDate := time.Date(2025, 12, 25, 10, 30, 0, 0, time.UTC)
-	fmt.Printf("Tanggal spesifik: %v\n", specificDate)
-	fmt.Printf("Hari: %s, Bulan: %s\n", specificDate.Weekday(), specificDate.Month())
+	tglNatal := time.Date(2025, 12, 25, 10, 30, 0, 0, time.UTC)
+	fmt.Printf("Tanggal spesifik: %v\n", tglNatal)
+	fmt.Printf("Hari: %s, Bulan: %s\n", tglNatal.Weekday(), tglNatal.Month())
 
 	// 3. Format dengan layout
 	fmt.Println("\n=== 3. time.Format() ===")
@@ -36,34 +36,34 @@ func main() {
 
 	// 4. Parse — string ke time.Time
 	fmt.Println("\n=== 4. time.Parse() ===")
-	dateStr := "2025-06-18 14:30:00"
-	parsedTime, err := time.Parse("2006-01-02 15:04:05", dateStr)
+	tglStr := "2025-06-18 14:30:00"
+	tglParse, err := time.Parse("2006-01-02 15:04:05", tglStr)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("Parse result: %v\n", parsedTime)
-	fmt.Printf("  Tahun: %d, Bulan: %s, Hari: %d\n", parsedTime.Year(), parsedTime.Month(), parsedTime.Day())
+	fmt.Printf("Parse result: %v\n", tglParse)
+	fmt.Printf("  Tahun: %d, Bulan: %s, Hari: %d\n", tglParse.Year(), tglParse.Month(), tglParse.Day())
 
 	// Parse dengan timezone
-	dateStrTZ := "2025-06-18T14:30:00+07:00"
-	parsedTZ, err := time.Parse(time.RFC3339, dateStrTZ)
+	tglStrTZ := "2025-06-18T14:30:00+07:00"
+	tglParseTZ, err := time.Parse(time.RFC3339, tglStrTZ)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("Parse RFC3339: %v (location: %s)\n", parsedTZ, parsedTZ.Location())
+	fmt.Printf("Parse RFC3339: %v (location: %s)\n", tglParseTZ, tglParseTZ.Location())
 
 	// 5. time.Since — durasi dari suatu waktu
 	fmt.Println("\n=== 5. time.Since() ===")
 	start := time.Now()
 	time.Sleep(50 * time.Millisecond)
-	elapsed := time.Since(start)
-	fmt.Printf("Durasi Sleep 50ms: %v\n", elapsed)
+	lama := time.Since(start)
+	fmt.Printf("Durasi Sleep 50ms: %v\n", lama)
 
 	// 6. time.Until — durasi sampai suatu waktu
 	fmt.Println("\n=== 6. time.Until() ===")
-	future := time.Now().Add(2 * time.Hour)
-	duration := time.Until(future)
-	fmt.Printf("Sisa waktu sampai +2 jam: %v\n", duration.Round(time.Second))
+	nanti := time.Now().Add(2 * time.Hour)
+	sisa := time.Until(nanti)
+	fmt.Printf("Sisa waktu sampai +2 jam: %v\n", sisa.Round(time.Second))
 
 	// 7. time.Ticker — periodic task
 	fmt.Println("\n=== 7. time.Ticker ===")
@@ -71,13 +71,13 @@ func main() {
 	done := make(chan struct{})
 
 	go func() {
-		ticks := 0
+		detak := 0
 		for {
 			select {
 			case t := <-ticker.C:
-				ticks++
-				fmt.Printf("  Ticker tick ke-%d: %s\n", ticks, t.Format("15:04:05.000"))
-				if ticks >= 3 {
+				detak++
+				fmt.Printf("  Detak ke-%d: %s\n", detak, t.Format("15:04:05.000"))
+				if detak >= 3 {
 					ticker.Stop()
 					close(done)
 					return
@@ -106,19 +106,19 @@ func main() {
 		fmt.Println("  After 100ms: timeout tercapai")
 	}
 
-	// Contoh select dengan After sebagai timeout
+	// Contoh select dengan After sebagai timeout — simulasi notifikasi
 	fmt.Println("\n  Contoh select dengan timeout:")
-	ch := make(chan string)
+	notifikasiCh := make(chan string)
 	go func() {
 		time.Sleep(500 * time.Millisecond)
-		ch <- "hasil"
+		notifikasiCh <- "pembayaran berhasil"
 	}()
 
 	select {
-	case msg := <-ch:
-		fmt.Printf("  Menerima: %s\n", msg)
+	case notif := <-notifikasiCh:
+		fmt.Printf("  Notifikasi: %s\n", notif)
 	case <-time.After(100 * time.Millisecond):
-		fmt.Println("  Timeout! Channel tidak merespon dalam 100ms")
+		fmt.Println("  Timeout! Tidak ada notifikasi dalam 100ms")
 	}
 
 	// 10. time.Sleep

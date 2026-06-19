@@ -1,6 +1,6 @@
 // fan_out_fan_in.go — Fan-Out / Fan-In Pattern
-// Fan-out: satu producer mengirim data ke banyak worker.
-// Fan-in: banyak worker mengirim hasil ke satu merged channel.
+// Fan-out: satu sumber gambar dikirim ke banyak prosesor.
+// Fan-in: banyak prosesor mengirim hasil ke satu channel merged.
 
 package main
 
@@ -11,9 +11,9 @@ import (
 	"time"
 )
 
-// producer mengirim data ke channel output.
+// pembacaGambar mengirim resolusi gambar ke channel output.
 // Setelah selesai, channel ditutup.
-func producer(out chan<- int, count int) {
+func pembacaGambar(out chan<- int, count int) {
 	for i := 1; i <= count; i++ {
 		out <- i
 		time.Sleep(50 * time.Millisecond)
@@ -21,15 +21,15 @@ func producer(out chan<- int, count int) {
 	close(out)
 }
 
-// worker membaca dari input, memproses, dan mengirim ke output.
-// Setelah input habis (channel di-close producer), worker close channel output-nya sendiri.
-func worker(id int, in <-chan int, out chan<- string, wg *sync.WaitGroup) {
+// prosesor membaca resolusi dari input, menghitung piksel, dan mengirim ke output.
+// Setelah input habis (channel di-close pembacaGambar), prosesor close channel output-nya sendiri.
+func prosesor(id int, in <-chan int, out chan<- string, wg *sync.WaitGroup) {
 	defer wg.Done()
 	defer close(out) // Tutup channel output agar fanIn tidak deadlock
-	for val := range in {
-		// Simulasi proses berat
+	for resolusi := range in {
+		// Simulasi proses render gambar
 		time.Sleep(time.Duration(rand.Intn(150)+50) * time.Millisecond)
-		out <- fmt.Sprintf("worker-%d: input=%d → output=%d", id, val, val*val)
+		out <- fmt.Sprintf("prosesor-%d: gambar %dpx → total piksel: %d", id, resolusi, resolusi*resolusi)
 	}
 }
 
@@ -58,31 +58,31 @@ func fanIn(inputs ...<-chan string) <-chan string {
 }
 
 func main() {
-	const numJobs = 8
-	const numWorkers = 3
+	const jumlahGambar = 8
+	const jumlahProsesor = 3
 
-	jobs := make(chan int, numJobs)
+	gambar := make(chan int, jumlahGambar)
 
-	// Fan-out: spread data ke N worker
-	workerChannels := make([]chan string, numWorkers)
+	// Fan-out: spread data ke N prosesor
+	channelProsesor := make([]chan string, jumlahProsesor)
 	var wg sync.WaitGroup
 
-	for i := 0; i < numWorkers; i++ {
-		workerChannels[i] = make(chan string, numJobs)
+	for i := 0; i < jumlahProsesor; i++ {
+		channelProsesor[i] = make(chan string, jumlahGambar)
 		wg.Add(1)
-		go worker(i+1, jobs, workerChannels[i], &wg)
+		go prosesor(i+1, gambar, channelProsesor[i], &wg)
 	}
 
-	// Producer (akan close jobs setelah selesai)
-	go producer(jobs, numJobs)
+	// PembacaGambar (akan close gambar setelah selesai)
+	go pembacaGambar(gambar, jumlahGambar)
 
 	// Konversi []chan string ke []<-chan string untuk fanIn
-	inputs := make([]<-chan string, numWorkers)
-	for i, ch := range workerChannels {
+	inputs := make([]<-chan string, jumlahProsesor)
+	for i, ch := range channelProsesor {
 		inputs[i] = ch
 	}
 
-	// Fan-in: gabungkan semua hasil worker
+	// Fan-in: gabungkan semua hasil prosesor
 	merged := fanIn(inputs...)
 
 	// Consumer: baca hasil dari merged channel
@@ -90,5 +90,5 @@ func main() {
 		fmt.Println(res)
 	}
 
-	fmt.Println("Fan-out/fan-in selesai.")
+	fmt.Println("Semua gambar selesai diproses.")
 }

@@ -75,8 +75,8 @@ func main() {
 
 	// errors.New
 	fmt.Println("=== errors.New / fmt.Errorf ===")
-	e1 := errors.New("kesalahan sederhana")
-	e2 := fmt.Errorf("gagal di %s: %w", "init", e1)
-	fmt.Println("e2:", e2)
-	fmt.Println("Unwrap:", errors.Unwrap(e2))
+	errDasar := errors.New("kesalahan sederhana")
+	errGabung := fmt.Errorf("gagal di %s: %w", "init", errDasar)
+	fmt.Println("errGabung:", errGabung)
+	fmt.Println("Unwrap:", errors.Unwrap(errGabung))
 }

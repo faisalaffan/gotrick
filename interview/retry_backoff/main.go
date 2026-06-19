@@ -64,26 +64,26 @@ func Retry(ctx context.Context, maxAttempts int, fn func() error) error {
 }
 
 func main() {
-	attemptCount := 0
+	percobaan := 0
 
-	// Simulasi fungsi yang gagal 3x lalu sukses
-	fn := func() error {
-		attemptCount++
-		if attemptCount <= 3 {
-			return fmt.Errorf("simulasi error ke-%d", attemptCount)
+	// Simulasi pembayaran yang gagal 3x lalu sukses
+	prosesPembayaran := func() error {
+		percobaan++
+		if percobaan <= 3 {
+			return fmt.Errorf("pembayaran ditolak bank (error ke-%d)", percobaan)
 		}
 		return nil
 	}
 
 	ctx := context.Background()
-	fmt.Println("=== Retry dengan Exponential Backoff + Jitter ===")
-	fmt.Println("Fungsi akan gagal 3x lalu sukses di attempt ke-4")
+	fmt.Println("=== Retry Pembayaran dengan Exponential Backoff + Jitter ===")
+	fmt.Println("Pembayaran akan gagal 3x lalu sukses di attempt ke-4")
 	fmt.Println()
 
-	err := Retry(ctx, 5, fn)
+	err := Retry(ctx, 5, prosesPembayaran)
 	if err != nil {
 		fmt.Printf("\nFinal error: %v\n", err)
 	} else {
-		fmt.Printf("\nSukses! Total eksekusi fungsi: %d\n", attemptCount)
+		fmt.Printf("\nSukses! Total percobaan pembayaran: %d\n", percobaan)
 	}
 }

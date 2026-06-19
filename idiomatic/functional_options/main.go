@@ -135,7 +135,7 @@ type DBOption func(*DBConfig)
 
 func defaultDBConfig() DBConfig {
 	return DBConfig{
-		dsn:             "postgres://localhost:5432/mydb",
+		dsn:             "postgres://localhost:5432/toko_buku",
 		maxOpen:         25,
 		maxIdle:         5,
 		connMaxLifetime: 5 * time.Minute,
@@ -199,9 +199,9 @@ func functionalOptionsDemo() {
 
 	fmt.Println()
 
-	// Contoh untuk database.
+	// Contoh untuk database — skema toko online.
 	db := NewDB(
-		WithDSN("postgres://user:pass@prod.example.com:5432/prod"),
+		WithDSN("postgres://admin:rahasia@db.tokobuku.com:5432/inventory"),
 		WithMaxOpen(100),
 	)
 	fmt.Printf("DB config: %+v\n", *db)

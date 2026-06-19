@@ -37,7 +37,7 @@ func main() {
 	// Jalankan 3 goroutine worker
 	for i := range 3 {
 		wg.Add(1)
-		go worker(ctxCancel, i+1, &wg)
+		go pekerja(ctxCancel, i+1, &wg)
 	}
 
 	time.Sleep(500 * time.Millisecond)
@@ -71,7 +71,7 @@ func main() {
 	ctxTest, cancelTest := context.WithCancelCause(context.Background())
 	go func() {
 		time.Sleep(300 * time.Millisecond)
-		cancelTest(fmt.Errorf("kesalahan di goroutine: ID %d", rand.Intn(100)))
+		cancelTest(fmt.Errorf("koneksi database terputus: kode %d", rand.Intn(100)))
 	}()
 
 	<-ctxTest.Done()
@@ -88,19 +88,19 @@ func main() {
 	fmt.Println("  - ctx.Err(): alasan cancellation")
 }
 
-// worker goroutine yang mendengarkan ctx.Done().
-func worker(ctx context.Context, id int, wg *sync.WaitGroup) {
+// pekerja goroutine yang mendengarkan ctx.Done().
+func pekerja(ctx context.Context, id int, wg *sync.WaitGroup) {
 	defer wg.Done()
 
 	for {
 		select {
 		case <-ctx.Done():
-			fmt.Printf("  [worker %d] Mendeteksi cancel! Err: %v\n", id, ctx.Err())
+			fmt.Printf("  [pekerja %d] Mendeteksi cancel! Err: %v\n", id, ctx.Err())
 			return
 		default:
 			// Simulasi kerja
 			time.Sleep(200 * time.Millisecond)
-			fmt.Printf("  [worker %d] Bekerja...\n", id)
+			fmt.Printf("  [pekerja %d] Bekerja...\n", id)
 		}
 	}
 }

@@ -12,14 +12,14 @@ func main() {
 	// ============================================================
 	fmt.Println("=== Goroutine Dasar ===")
 
-	done := make(chan bool)
+	selesai := make(chan bool)
 
 	go func() {
 		fmt.Println("  [goroutine] Halo dari goroutine!")
-		done <- true
+		selesai <- true
 	}()
 
-	<-done // blocking sampai goroutine selesai
+	<-selesai // blocking sampai goroutine selesai
 	fmt.Println()
 
 	// ============================================================
@@ -27,15 +27,15 @@ func main() {
 	// ============================================================
 	fmt.Println("=== Unbuffered Channel ===")
 
-	ch := make(chan int)
+	kanal := make(chan int)
 
 	go func() {
-		ch <- 42 // blocking sampai main menerima
+		kanal <- 42 // blocking sampai main menerima
 		fmt.Println("  [goroutine] 42 terkirim")
 	}()
 
-	val := <-ch // blocking sampai ada data
-	fmt.Printf("  [main]   menerima %d\n\n", val)
+	angka := <-kanal // blocking sampai ada data
+	fmt.Printf("  [main]   menerima %d\n\n", angka)
 
 	// ============================================================
 	// Buffered channel — tidak blocking sampai penuh
@@ -62,8 +62,8 @@ func main() {
 	}
 	close(nums) // wajib close sebelum range
 
-	for n := range nums {
-		fmt.Printf("  %d\n", n)
+	for bilangan := range nums {
+		fmt.Printf("  %d\n", bilangan)
 	}
 	fmt.Println()
 

@@ -33,26 +33,26 @@ func (u User) Label() string {
 
 func main() {
 	// Struct literal — named fields
-	u1 := User{
+	penggunaBudi := User{
 		ID:    1,
-		Name:  "Alice",
-		Email: "alice@example.com",
+		Name:  "Budi",
+		Email: "budi@example.com",
 	}
 	fmt.Println("=== User ===")
-	fmt.Printf("%+v\n", u1)
-	fmt.Println(u1.Greet())
+	fmt.Printf("%+v\n", penggunaBudi)
+	fmt.Println(penggunaBudi.Greet())
 
 	// Pointer receiver — email berubah
-	u1.ChangeEmail("alice@new.org")
-	fmt.Println("Setelah ganti email:", u1.Email)
+	penggunaBudi.ChangeEmail("budi@new.org")
+	fmt.Println("Setelah ganti email:", penggunaBudi.Email)
 	fmt.Println()
 
 	// Embedded struct — field & method User bisa diakses langsung
 	acc := Account{
 		User: User{
 			ID:    10,
-			Name:  "Bob",
-			Email: "bob@example.com",
+			Name:  "Siti",
+			Email: "siti@example.com",
 		},
 		Balance: 250.75,
 	}
@@ -63,8 +63,8 @@ func main() {
 
 	// Perbedaan value vs pointer receiver
 	fmt.Println("=== Value vs Pointer Receiver ===")
-	u2 := User{ID: 2, Name: "Charlie", Email: "c@old.com"}
-	u2.Greet()           // value receiver — boleh dipanggil via value
-	u2.ChangeEmail("c@new.com") // pointer receiver — Go otomatis ambil &u2
-	fmt.Printf("u2.Email = %s\n", u2.Email)
+	penggunaAmin := User{ID: 2, Name: "Amin", Email: "amin@old.com"}
+	penggunaAmin.Greet()                      // value receiver — boleh dipanggil via value
+	penggunaAmin.ChangeEmail("amin@new.com") // pointer receiver — Go otomatis ambil &penggunaAmin
+	fmt.Printf("penggunaAmin.Email = %s\n", penggunaAmin.Email)
 }

@@ -15,94 +15,94 @@ import (
 )
 
 func main() {
-	const goroutines = 100
-	const iterations = 1000
+	const jumlahKasir = 100
+	const transaksiPerKasir = 1000
 
 	// --- DEMO RACE CONDITION (TANPA SYNC) ---
 	// Jalankan dengan: go run -race race_demo.go
 	// Akan keluar: WARNING: DATA RACE
 	fmt.Println("=== RACE CONDITION (tanpa sinkronisasi) ===")
 	{
-		var counter int
+		var totalPengunjung int
 		var wg sync.WaitGroup
 
-		for i := 0; i < goroutines; i++ {
+		for i := 0; i < jumlahKasir; i++ {
 			wg.Add(1)
 			go func() {
 				defer wg.Done()
-				for j := 0; j < iterations; j++ {
-					counter++ // DATA RACE! Multiple goroutine write tanpa sync
+				for j := 0; j < transaksiPerKasir; j++ {
+					totalPengunjung++ // DATA RACE! Multiple goroutine write tanpa sync
 				}
 			}()
 		}
 		wg.Wait()
-		fmt.Printf("Counter (race): %d (seharusnya %d)\n", counter, goroutines*iterations)
+		fmt.Printf("Total pengunjung (race): %d (seharusnya %d)\n", totalPengunjung, jumlahKasir*transaksiPerKasir)
 	}
 	// Hasilnya tidak prediktif dan biasanya salah.
 
 	// --- FIX 1: sync.Mutex ---
 	fmt.Println("\n=== FIX 1: sync.Mutex ===")
 	{
-		var counter int
+		var totalPengunjung int
 		var mu sync.Mutex
 		var wg sync.WaitGroup
 
-		for i := 0; i < goroutines; i++ {
+		for i := 0; i < jumlahKasir; i++ {
 			wg.Add(1)
 			go func() {
 				defer wg.Done()
-				for j := 0; j < iterations; j++ {
+				for j := 0; j < transaksiPerKasir; j++ {
 					mu.Lock()
-					counter++ // Hanya satu goroutine boleh akses dalam satu waktu
+					totalPengunjung++ // Hanya satu goroutine boleh akses dalam satu waktu
 					mu.Unlock()
 				}
 			}()
 		}
 		wg.Wait()
-		fmt.Printf("Counter (mutex): %d\n", counter)
+		fmt.Printf("Total pengunjung (mutex): %d\n", totalPengunjung)
 	}
 
 	// --- FIX 2: sync/atomic ---
 	fmt.Println("\n=== FIX 2: sync/atomic ===")
 	{
-		var counter atomic.Int64
+		var totalPengunjung atomic.Int64
 		var wg sync.WaitGroup
 
-		for i := 0; i < goroutines; i++ {
+		for i := 0; i < jumlahKasir; i++ {
 			wg.Add(1)
 			go func() {
 				defer wg.Done()
-				for j := 0; j < iterations; j++ {
-					counter.Add(1) // Operasi atomik, tanpa explicit lock
+				for j := 0; j < transaksiPerKasir; j++ {
+					totalPengunjung.Add(1) // Operasi atomik, tanpa explicit lock
 				}
 			}()
 		}
 		wg.Wait()
-		fmt.Printf("Counter (atomic): %d\n", counter.Load())
+		fmt.Printf("Total pengunjung (atomic): %d\n", totalPengunjung.Load())
 	}
 
 	// --- FIX 3: Channel ---
 	fmt.Println("\n=== FIX 3: Channel ===")
 	{
-		const totalIncrements = goroutines * iterations
-		counter := 0
+		const totalIncrements = jumlahKasir * transaksiPerKasir
+		totalPengunjung := 0
 		inc := make(chan int)
 		done := make(chan struct{})
 
 		// Satu goroutine dedicated untuk akses counter (mutual exclusion via channel)
 		go func() {
 			for delta := range inc {
-				counter += delta
+				totalPengunjung += delta
 			}
 			done <- struct{}{}
 		}()
 
 		var wg sync.WaitGroup
-		for i := 0; i < goroutines; i++ {
+		for i := 0; i < jumlahKasir; i++ {
 			wg.Add(1)
 			go func() {
 				defer wg.Done()
-				for j := 0; j < iterations; j++ {
+				for j := 0; j < transaksiPerKasir; j++ {
 					inc <- 1 // Kirim increment via channel
 				}
 			}()
@@ -111,7 +111,7 @@ func main() {
 		wg.Wait()
 		close(inc) // Tutup channel — goroutine receiver akan exit
 		<-done     // Tunggu receiver selesai
-		fmt.Printf("Counter (channel): %d\n", counter)
+		fmt.Printf("Total pengunjung (channel): %d\n", totalPengunjung)
 	}
 
 	// --- CARA DETEKSI ---

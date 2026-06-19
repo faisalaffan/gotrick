@@ -14,30 +14,30 @@ import (
 	"time"
 )
 
-// slowAPICall mensimulasikan request API dengan delay acak.
-func slowAPICall(ctx context.Context, name string, delay time.Duration) string {
+// panggilAPI mensimulasikan request API dengan delay acak.
+func panggilAPI(ctx context.Context, nama string, delay time.Duration) string {
 	select {
 	case <-time.After(delay):
-		return fmt.Sprintf("%s selesai dalam %v", name, delay)
+		return fmt.Sprintf("%s selesai dalam %v", nama, delay)
 	case <-ctx.Done():
-		return fmt.Sprintf("%s dibatalkan: %v", name, ctx.Err())
+		return fmt.Sprintf("%s dibatalkan: %v", nama, ctx.Err())
 	}
 }
 
 func main() {
 	// --- Pattern 1: select tunggu multiple channel ---
 	fmt.Println("=== Pattern 1: Multiple channel ===")
-	ch1 := make(chan string, 1)
-	ch2 := make(chan string, 1)
+	cuaca := make(chan string, 1)
+	kurs := make(chan string, 1)
 
-	go func() { time.Sleep(50 * time.Millisecond); ch1 <- "dari ch1" }()
-	go func() { time.Sleep(100 * time.Millisecond); ch2 <- "dari ch2" }()
+	go func() { time.Sleep(50 * time.Millisecond); cuaca <- "CekCuaca: 32°C, cerah" }()
+	go func() { time.Sleep(100 * time.Millisecond); kurs <- "CekKurs: 1 USD = Rp 16.200" }()
 
 	select {
-	case msg := <-ch1:
-		fmt.Println("ch1 menang:", msg)
-	case msg := <-ch2:
-		fmt.Println("ch2 menang:", msg)
+	case msg := <-cuaca:
+		fmt.Println("Cuaca menang:", msg)
+	case msg := <-kurs:
+		fmt.Println("Kurs menang:", msg)
 	}
 
 	// --- Pattern 2: non-blocking send/receive ---
@@ -61,14 +61,14 @@ func main() {
 
 	// --- Pattern 3: timeout ---
 	fmt.Println("\n=== Pattern 3: Timeout ===")
-	slow := make(chan string, 1)
+	apiLambat := make(chan string, 1)
 	go func() {
 		time.Sleep(200 * time.Millisecond)
-		slow <- "data akhirnya sampai"
+		apiLambat <- "data cuaca akhirnya sampai"
 	}()
 
 	select {
-	case msg := <-slow:
+	case msg := <-apiLambat:
 		fmt.Println(msg)
 	case <-time.After(100 * time.Millisecond):
 		fmt.Println("Timeout! Operasi terlalu lambat.")
@@ -94,29 +94,29 @@ func main() {
 	ctx2, cancel2 := context.WithCancel(context.Background())
 	defer cancel2()
 
-	results := make(chan string, 3)
-	services := []struct {
+	hasil := make(chan string, 3)
+	daftarAPI := []struct {
 		name  string
 		delay time.Duration
 	}{
-		{"server-A", time.Duration(rand.Intn(300)+50) * time.Millisecond},
-		{"server-B", time.Duration(rand.Intn(300)+50) * time.Millisecond},
-		{"server-C", time.Duration(rand.Intn(300)+50) * time.Millisecond},
+		{"CekCuaca", time.Duration(rand.Intn(300)+50) * time.Millisecond},
+		{"CekKurs", time.Duration(rand.Intn(300)+50) * time.Millisecond},
+		{"CekTraffic", time.Duration(rand.Intn(300)+50) * time.Millisecond},
 	}
 
-	for _, svc := range services {
+	for _, svc := range daftarAPI {
 		go func(s struct {
 			name  string
 			delay time.Duration
 		}) {
-			results <- slowAPICall(ctx2, s.name, s.delay)
+			hasil <- panggilAPI(ctx2, s.name, s.delay)
 		}(svc)
 	}
 
 	// Ambil hasil pertama yang datang
 	select {
-	case winner := <-results:
-		fmt.Println("Pemenang:", winner)
+	case pemenang := <-hasil:
+		fmt.Println("Pemenang:", pemenang)
 		cancel2() // Batalkan worker lain
 	case <-time.After(1 * time.Second):
 		fmt.Println("Semua timeout")

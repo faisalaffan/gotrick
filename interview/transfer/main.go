@@ -7,19 +7,19 @@ import (
 	"sync"
 )
 
-// Account merepresentasikan rekening bank.
-// sync.Mutex melindungi Balance dari race condition concurrent.
-type Account struct {
+// Rekening merepresentasikan rekening bank.
+// sync.Mutex melindungi Saldo dari race condition concurrent.
+type Rekening struct {
 	ID      int
-	Balance int
+	Saldo   int
 	mu      sync.Mutex
 }
 
-// Transfer memindahkan dana antar dua account.
+// Transfer memindahkan dana antar dua rekening.
 // Lock ordering berdasarkan ID lebih kecil dulu untuk menghindari deadlock.
-// Mengecek balance cukup sebelum transfer.
-func Transfer(from, to *Account, amount int) error {
-	// Lock ordering: kunci account dengan ID lebih kecil dulu
+// Mengecek saldo cukup sebelum transfer.
+func Transfer(from, to *Rekening, amount int) error {
+	// Lock ordering: kunci rekening dengan ID lebih kecil dulu
 	// Ini mencegah circular wait → deadlock
 	if from.ID < to.ID {
 		from.mu.Lock()
@@ -31,18 +31,18 @@ func Transfer(from, to *Account, amount int) error {
 		// Transfer ke diri sendiri — hanya perlu 1 lock
 		from.mu.Lock()
 		defer from.mu.Unlock()
-		return fmt.Errorf("transfer ke akun sendiri: from=%d == to=%d", from.ID, to.ID)
+		return fmt.Errorf("transfer ke rekening sendiri: from=%d == to=%d", from.ID, to.ID)
 	}
 
 	// Kritikal section dimulai
-	if from.Balance < amount {
+	if from.Saldo < amount {
 		from.mu.Unlock()
 		to.mu.Unlock()
-		return fmt.Errorf("saldo tidak cukup: account %d punya %d, perlu %d", from.ID, from.Balance, amount)
+		return fmt.Errorf("saldo tidak cukup: rekening %d punya %d, perlu %d", from.ID, from.Saldo, amount)
 	}
 
-	from.Balance -= amount
-	to.Balance += amount
+	from.Saldo -= amount
+	to.Saldo += amount
 	// Kritikal section selesai
 
 	from.mu.Unlock()
@@ -50,64 +50,64 @@ func Transfer(from, to *Account, amount int) error {
 	return nil
 }
 
-// BalanceWithLock aman dibaca concurrent karena pakai lock.
-func BalanceWithLock(a *Account) int {
+// SaldoWithLock aman dibaca concurrent karena pakai lock.
+func SaldoWithLock(a *Rekening) int {
 	a.mu.Lock()
 	defer a.mu.Unlock()
-	return a.Balance
+	return a.Saldo
 }
 
 func main() {
-	// Inisialisasi 3 account dengan saldo awal
-	accounts := []*Account{
-		{ID: 1, Balance: 100_000},
-		{ID: 2, Balance: 50_000},
-		{ID: 3, Balance: 25_000},
+	// Inisialisasi 3 rekening dengan saldo awal
+	rekening := []*Rekening{
+		{ID: 1, Saldo: 100_000},
+		{ID: 2, Saldo: 50_000},
+		{ID: 3, Saldo: 25_000},
 	}
 
 	// Hitung total awal
 	totalAwal := 0
-	for _, a := range accounts {
-		totalAwal += BalanceWithLock(a)
+	for _, r := range rekening {
+		totalAwal += SaldoWithLock(r)
 	}
 	fmt.Printf("Total saldo awal: Rp %d\n\n", totalAwal)
 
 	var wg sync.WaitGroup
-	numGoroutines := 10
+	jumlahGoroutine := 10
 
-	for i := range numGoroutines {
+	for i := range jumlahGoroutine {
 		wg.Add(1)
 		go func(id int) {
 			defer wg.Done()
 
 			// Pilih pengirim dan penerima acak (pastikan berbeda)
-			fromIdx := rand.Intn(len(accounts))
-			toIdx := rand.Intn(len(accounts))
-			for toIdx == fromIdx {
-				toIdx = rand.Intn(len(accounts))
+			dariIdx := rand.Intn(len(rekening))
+			keIdx := rand.Intn(len(rekening))
+			for keIdx == dariIdx {
+				keIdx = rand.Intn(len(rekening))
 			}
 
-			amount := (rand.Intn(10) + 1) * 1000
-			err := Transfer(accounts[fromIdx], accounts[toIdx], amount)
+			jumlah := (rand.Intn(10) + 1) * 1000
+			err := Transfer(rekening[dariIdx], rekening[keIdx], jumlah)
 			if err != nil {
 				fmt.Printf("[goroutine %02d] GAGAL: %s\n", id, err)
 			} else {
-				fmt.Printf("[goroutine %02d] OK: Rp %d dari Account %d → Account %d\n",
-					id, amount, accounts[fromIdx].ID, accounts[toIdx].ID)
+				fmt.Printf("[goroutine %02d] OK: Rp %d dari Rekening %d → Rekening %d\n",
+					id, jumlah, rekening[dariIdx].ID, rekening[keIdx].ID)
 			}
 		}(i)
 	}
 
 	wg.Wait()
 
-	// Verifikasi total balance preserved
+	// Verifikasi total saldo preserved
 	totalAkhir := 0
-	for _, a := range accounts {
-		totalAkhir += BalanceWithLock(a)
+	for _, r := range rekening {
+		totalAkhir += SaldoWithLock(r)
 	}
 	fmt.Printf("\n=== HASIL AKHIR ===\n")
-	for _, a := range accounts {
-		fmt.Printf("Account %d: Rp %d\n", a.ID, BalanceWithLock(a))
+	for _, r := range rekening {
+		fmt.Printf("Rekening %d: Rp %d\n", r.ID, SaldoWithLock(r))
 	}
 	fmt.Printf("Total saldo akhir: Rp %d\n", totalAkhir)
 	fmt.Printf("Preserved? %v (tidak ada dana hilang/bertambah)\n", totalAwal == totalAkhir)

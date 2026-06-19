@@ -23,10 +23,10 @@ func main() {
 	// bukan saat fungsi deferred dieksekusi.
 	// ============================================================
 	fmt.Println("=== Defer Argument Evaluation ===")
-	x := 10
-	defer fmt.Println("  nilai x saat defer:", x) // tetap 10
-	x = 20
-	fmt.Println("  nilai x setelah diubah:", x) // 20
+	nilai := 10
+	defer fmt.Println("  nilai saat defer:", nilai) // tetap 10
+	nilai = 20
+	fmt.Println("  nilai setelah diubah:", nilai) // 20
 	fmt.Println()
 
 	// ============================================================
@@ -52,17 +52,17 @@ func panicFunc() {
 
 // cleanupExample — contoh use case cleanup resource.
 func cleanupExample() {
-	f, err := os.CreateTemp("", "example-*")
+	fileSementara, err := os.CreateTemp("", "contoh-*")
 	if err != nil {
 		panic(err)
 	}
 	// Cleanup: file dihapus saat fungsi selesai (apapun yang terjadi)
-	defer os.Remove(f.Name())
-	defer f.Close()
+	defer os.Remove(fileSementara.Name())
+	defer fileSementara.Close()
 
-	fmt.Fprintln(f, "data penting")
-	fmt.Println("  file temporary dibuat:", f.Name())
-	// defer akan menjalankan f.Close() lalu os.Remove()
+	fmt.Fprintln(fileSementara, "data penting")
+	fmt.Println("  file temporary dibuat:", fileSementara.Name())
+	// defer akan menjalankan fileSementara.Close() lalu os.Remove()
 }
 
 // init dipanggil otomatis sebelum main (tidak penting, hanya demo).
