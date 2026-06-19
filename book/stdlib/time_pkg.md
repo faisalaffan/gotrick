@@ -5,11 +5,11 @@
 ## Cara Menjalankan
 
 ```bash
-go run -tags=time_pkg ./stdlib/
+go run ./stdlib/time_pkg/ ./stdlib/
 ```
 
 ## Source Code
 
 ```go
-{{#include ../../stdlib/time_pkg.go}}
+{{#include ../../stdlib/time_pkg/main.go}}
 ```

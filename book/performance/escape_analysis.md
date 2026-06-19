@@ -5,7 +5,7 @@ Escape analysis adalah optimisasi compiler Go yang menentukan apakah sebuah vari
 ## Cara Menjalankan
 
 ```bash
-go run -tags=escape_analysis ./performance/
+go run ./performance/escape_analysis/ ./performance/
 
 # Cek analisa escape:
 go build -gcflags="-m" ./performance/
@@ -14,5 +14,5 @@ go build -gcflags="-m" ./performance/
 ## Source Code
 
 ```go
-{{#include ../../performance/escape_analysis.go}}
+{{#include ../../performance/escape_analysis/main.go}}
 ```

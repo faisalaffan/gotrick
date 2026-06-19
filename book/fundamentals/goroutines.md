@@ -5,11 +5,11 @@ Goroutine adalah eksekusi ringan yang berjalan concurrent (`go f()`). Channel me
 ## Cara Menjalankan
 
 ```bash
-go run -tags=goroutines ./fundamentals/
+go run ./fundamentals/goroutines/ ./fundamentals/
 ```
 
 ## Source Code
 
 ```go
-{{#include ../../fundamentals/goroutines.go}}
+{{#include ../../fundamentals/goroutines/main.go}}
 ```

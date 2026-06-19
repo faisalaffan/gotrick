@@ -5,11 +5,11 @@
 ## Cara Menjalankan
 
 ```bash
-go run -tags=json ./stdlib/
+go run ./stdlib/json/ ./stdlib/
 ```
 
 ## Source Code
 
 ```go
-{{#include ../../stdlib/json.go}}
+{{#include ../../stdlib/json/main.go}}
 ```

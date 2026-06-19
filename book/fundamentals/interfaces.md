@@ -5,11 +5,11 @@ Interface di Go dideklarasikan sebagai kumpulan method signature. Satisfaction b
 ## Cara Menjalankan
 
 ```bash
-go run -tags=interfaces ./fundamentals/
+go run ./fundamentals/interfaces/ ./fundamentals/
 ```
 
 ## Source Code
 
 ```go
-{{#include ../../fundamentals/interfaces.go}}
+{{#include ../../fundamentals/interfaces/main.go}}
 ```

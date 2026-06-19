@@ -5,11 +5,11 @@ Multi-stage pipeline dengan channels. Stage 1 generate numbers, Stage 2 mengkuad
 ## Cara Menjalankan
 
 ```bash
-go run -tags=pipeline ./concurrency/
+go run ./concurrency/pipeline/ ./concurrency/
 ```
 
 ## Source Code
 
 ```go
-{{#include ../../concurrency/pipeline.go}}
+{{#include ../../concurrency/pipeline/main.go}}
 ```

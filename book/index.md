@@ -27,8 +27,8 @@ Setiap contoh bisa dijalankan dengan build tag:
 go run ./fundamentals/
 
 # Contoh spesifik
-go run -tags=transfer ./interview/
-go run -tags=worker_pool ./concurrency/
+go run ./interview/transfer/
+go run ./concurrency/worker_pool/
 
 # Test
 go test ./idiomatic/ -v

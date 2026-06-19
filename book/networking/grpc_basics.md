@@ -6,10 +6,10 @@ gRPC menggunakan protobuf untuk code generation dari file `.proto`, HTTP/2 untuk
 
 ```bash
 # Terminal 1: jalankan server
-go run -tags=server ./networking/grpc_basics/
+go run ./networking/grpc_basics/server/ ./networking/grpc_basics/
 
 # Terminal 2: jalankan client
-go run -tags=client ./networking/grpc_basics/
+go run ./networking/grpc_basics/client/ ./networking/grpc_basics/
 ```
 
 ## Source Code
@@ -17,17 +17,17 @@ go run -tags=client ./networking/grpc_basics/
 ### service.go (contract)
 
 ```go
-{{#include ../../networking/grpc_basics/service.go}}
+{{#include ../../networking/grpc_basics/server/main.go}}
 ```
 
 ### server.go (implementasi)
 
 ```go
-{{#include ../../networking/grpc_basics/server.go}}
+{{#include ../../networking/grpc_basics/server/main.go}}
 ```
 
 ### client.go (stub)
 
 ```go
-{{#include ../../networking/grpc_basics/client.go}}
+{{#include ../../networking/grpc_basics/client/main.go}}
 ```

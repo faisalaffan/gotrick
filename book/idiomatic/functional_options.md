@@ -5,11 +5,11 @@ Functional options adalah pattern untuk constructor dengan parameter opsional ya
 ## Cara Menjalankan
 
 ```bash
-go run -tags=functional_options ./idiomatic/
+go run ./idiomatic/functional_options/ ./idiomatic/
 ```
 
 ## Source Code
 
 ```go
-{{#include ../../idiomatic/functional_options.go}}
+{{#include ../../idiomatic/functional_options/main.go}}
 ```

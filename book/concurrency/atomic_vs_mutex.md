@@ -5,11 +5,11 @@
 ## Cara Menjalankan
 
 ```bash
-go run -tags=atomic_vs_mutex ./concurrency/
+go run ./concurrency/atomic_vs_mutex/ ./concurrency/
 ```
 
 ## Source Code
 
 ```go
-{{#include ../../concurrency/atomic_vs_mutex.go}}
+{{#include ../../concurrency/atomic_vs_mutex/main.go}}
 ```

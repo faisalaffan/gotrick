@@ -5,11 +5,11 @@ Simulasi transfer antar rekening dengan 10 goroutine concurrent. Lock ordering k
 ## Cara Menjalankan
 
 ```bash
-go run -tags=transfer ./interview/
+go run ./interview/transfer/ ./interview/
 ```
 
 ## Source Code
 
 ```go
-{{#include ../../interview/transfer.go}}
+{{#include ../../interview/transfer/main.go}}
 ```

@@ -5,11 +5,11 @@ Struct embedding adalah mekanisme komposisi di Go, bukan inheritance. Method dan
 ## Cara Menjalankan
 
 ```bash
-go run -tags=embedding ./idiomatic/
+go run ./idiomatic/embedding/ ./idiomatic/
 ```
 
 ## Source Code
 
 ```go
-{{#include ../../idiomatic/embedding.go}}
+{{#include ../../idiomatic/embedding/main.go}}
 ```

@@ -5,11 +5,11 @@ Idempotency memastikan operasi dengan key yang sama hanya dieksekusi sekali. Pat
 ## Cara Menjalankan
 
 ```bash
-go run -tags=idempotency ./interview/
+go run ./interview/idempotency/ ./interview/
 ```
 
 ## Source Code
 
 ```go
-{{#include ../../interview/idempotency.go}}
+{{#include ../../interview/idempotency/main.go}}
 ```

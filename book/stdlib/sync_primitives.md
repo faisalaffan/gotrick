@@ -5,11 +5,11 @@
 ## Cara Menjalankan
 
 ```bash
-go run -tags=sync_primitives ./stdlib/
+go run ./stdlib/sync_primitives/ ./stdlib/
 ```
 
 ## Source Code
 
 ```go
-{{#include ../../stdlib/sync_primitives.go}}
+{{#include ../../stdlib/sync_primitives/main.go}}
 ```

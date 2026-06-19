@@ -5,11 +5,11 @@ Rate limiter dengan algoritma Token Bucket. Token ditambahkan secara periodik be
 ## Cara Menjalankan
 
 ```bash
-go run -tags=rate_limiter ./interview/
+go run ./interview/rate_limiter/ ./interview/
 ```
 
 ## Source Code
 
 ```go
-{{#include ../../interview/rate_limiter.go}}
+{{#include ../../interview/rate_limiter/main.go}}
 ```

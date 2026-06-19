@@ -5,11 +5,11 @@ pprof adalah toolkit profiling bawaan Go. Dengan mengimpor `net/http/pprof`, ser
 ## Cara Menjalankan
 
 ```bash
-go run -tags=profiling_demo ./performance/
+go run ./performance/profiling/ ./performance/
 ```
 
 ## Source Code
 
 ```go
-{{#include ../../performance/profiling_demo.go}}
+{{#include ../../performance/profiling/main.go}}
 ```

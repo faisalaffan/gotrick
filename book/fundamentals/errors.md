@@ -5,11 +5,11 @@ Error di Go direpresentasikan oleh interface `error` bawaan. `errors.New()` dan 
 ## Cara Menjalankan
 
 ```bash
-go run -tags=errors ./fundamentals/
+go run ./fundamentals/errors/ ./fundamentals/
 ```
 
 ## Source Code
 
 ```go
-{{#include ../../fundamentals/errors.go}}
+{{#include ../../fundamentals/errors/main.go}}
 ```

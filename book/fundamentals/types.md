@@ -5,11 +5,11 @@ Tipe data dasar Go terdiri dari integer, float, string, bool, serta koleksi sepe
 ## Cara Menjalankan
 
 ```bash
-go run -tags=types ./fundamentals/
+go run ./fundamentals/types/ ./fundamentals/
 ```
 
 ## Source Code
 
 ```go
-{{#include ../../fundamentals/main.go}}
+{{#include ../../fundamentals/types/main.go}}
 ```

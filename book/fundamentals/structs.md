@@ -5,11 +5,11 @@ Struct adalah tipe data bentukan yang mengelompokkan field-field terkait. Method
 ## Cara Menjalankan
 
 ```bash
-go run -tags=structs ./fundamentals/
+go run ./fundamentals/structs/ ./fundamentals/
 ```
 
 ## Source Code
 
 ```go
-{{#include ../../fundamentals/structs.go}}
+{{#include ../../fundamentals/structs/main.go}}
 ```

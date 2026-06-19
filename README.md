@@ -56,12 +56,12 @@ GoTrick is a curated collection of Go code examples designed for backend enginee
 git clone git@github.com:faisalaffan/gotrick.git
 cd gotrick
 
-# Run any example (pick the tag)
-go run -tags=transfer     ./interview/   # Concurrent transfer + deadlock avoidance
-go run -tags=worker_pool  ./concurrency/  # Bounded worker pool
-go run -tags=interfaces   ./fundamentals/ # Interface basics + nil trap
+# Run any example
+go run ./interview/transfer/           # Concurrent transfer + deadlock avoidance
+go run ./concurrency/worker_pool/      # Bounded worker pool
+go run ./fundamentals/interfaces/      # Interface basics + nil trap
 
-# Default view (shows available tags)
+# Default view (shows available examples)
 go run ./fundamentals/
 
 # Run tests
@@ -71,11 +71,11 @@ go test -bench=. -benchmem ./performance/
 
 ## How It Works
 
-Every file uses **build tags** (`//go:build <tag>`) so you can run examples independently:
+Each example lives in its own directory — one `main.go` per package:
 
 ```bash
-# file: transfer.go → //go:build transfer
-go run -tags=transfer ./interview/
+# interview/transfer/main.go → go run ./interview/transfer/
+go run ./interview/transfer/
 ```
 
 See [full docs](https://faisalaffan.github.io/gotrick/) for all available tags and explanations.

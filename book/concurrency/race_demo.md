@@ -5,11 +5,11 @@ Demonstrasi race condition -- multiple goroutine increment shared counter tanpa 
 ## Cara Menjalankan
 
 ```bash
-go run -tags=race_demo ./concurrency/
+go run ./concurrency/race_demo/ ./concurrency/
 ```
 
 ## Source Code
 
 ```go
-{{#include ../../concurrency/race_demo.go}}
+{{#include ../../concurrency/race_demo/main.go}}
 ```

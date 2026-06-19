@@ -5,11 +5,11 @@
 ## Cara Menjalankan
 
 ```bash
-go run -tags=context_usage ./stdlib/
+go run ./stdlib/context_usage/ ./stdlib/
 ```
 
 ## Source Code
 
 ```go
-{{#include ../../stdlib/context_usage.go}}
+{{#include ../../stdlib/context_usage/main.go}}
 ```

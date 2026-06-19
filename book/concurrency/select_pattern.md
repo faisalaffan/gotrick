@@ -5,11 +5,11 @@
 ## Cara Menjalankan
 
 ```bash
-go run -tags=select_pattern ./concurrency/
+go run ./concurrency/select_pattern/ ./concurrency/
 ```
 
 ## Source Code
 
 ```go
-{{#include ../../concurrency/select_pattern.go}}
+{{#include ../../concurrency/select_pattern/main.go}}
 ```

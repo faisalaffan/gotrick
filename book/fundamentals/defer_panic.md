@@ -5,11 +5,11 @@
 ## Cara Menjalankan
 
 ```bash
-go run -tags=defer_panic ./fundamentals/
+go run ./fundamentals/defer_panic/ ./fundamentals/
 ```
 
 ## Source Code
 
 ```go
-{{#include ../../fundamentals/defer_panic.go}}
+{{#include ../../fundamentals/defer_panic/main.go}}
 ```

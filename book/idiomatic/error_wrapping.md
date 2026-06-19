@@ -5,11 +5,11 @@ Error wrapping di Go menggunakan `fmt.Errorf` dengan verb `%w` untuk membungkus 
 ## Cara Menjalankan
 
 ```bash
-go run -tags=error_wrapping ./idiomatic/
+go run ./idiomatic/error_wrapping/ ./idiomatic/
 ```
 
 ## Source Code
 
 ```go
-{{#include ../../idiomatic/error_wrapping.go}}
+{{#include ../../idiomatic/error_wrapping/main.go}}
 ```

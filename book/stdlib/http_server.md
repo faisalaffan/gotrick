@@ -5,11 +5,11 @@ Server HTTP dengan **Fiber** (`github.com/gofiber/fiber/v2`) — routing, middle
 ## Cara Menjalankan
 
 ```bash
-go run -tags=http_server ./stdlib/
+go run ./stdlib/httpserver/ ./stdlib/
 ```
 
 ## Source Code
 
 ```go
-{{#include ../../stdlib/http_server.go}}
+{{#include ../../stdlib/httpserver/main.go}}
 ```

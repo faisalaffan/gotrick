@@ -5,11 +5,11 @@ Retry pattern dengan exponential backoff menggunakan `math.Pow(2, attempt)` untu
 ## Cara Menjalankan
 
 ```bash
-go run -tags=retry_backoff ./interview/
+go run ./interview/retry_backoff/ ./interview/
 ```
 
 ## Source Code
 
 ```go
-{{#include ../../interview/retry_backoff.go}}
+{{#include ../../interview/retry_backoff/main.go}}
 ```

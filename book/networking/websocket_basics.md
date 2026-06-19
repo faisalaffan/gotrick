@@ -6,10 +6,10 @@ WebSocket menyediakan komunikasi full-duplex melalui satu koneksi TCP. Simulasi 
 
 ```bash
 # Terminal 1: jalankan server
-go run -tags=server ./networking/websocket_basics/
+go run ./networking/grpc_basics/server/ ./networking/websocket_basics/
 
 # Terminal 2: jalankan client
-go run -tags=client ./networking/websocket_basics/
+go run ./networking/grpc_basics/client/ ./networking/websocket_basics/
 ```
 
 ## Source Code
@@ -17,11 +17,11 @@ go run -tags=client ./networking/websocket_basics/
 ### server.go
 
 ```go
-{{#include ../../networking/websocket_basics/server.go}}
+{{#include ../../networking/websocket_basics/server/main.go}}
 ```
 
 ### client.go
 
 ```go
-{{#include ../../networking/websocket_basics/client.go}}
+{{#include ../../networking/websocket_basics/client/main.go}}
 ```

@@ -56,12 +56,12 @@ GoTrick adalah kumpulan contoh kode Go yang dirancang untuk backend engineer yan
 git clone git@github.com:faisalaffan/gotrick.git
 cd gotrick
 
-# Jalankan contoh (pilih tag)
-go run -tags=transfer     ./interview/   # Concurrent transfer + deadlock avoidance
-go run -tags=worker_pool  ./concurrency/  # Bounded worker pool
-go run -tags=interfaces   ./fundamentals/ # Interface basics + nil trap
+# Jalankan contoh
+go run ./interview/transfer/           # Concurrent transfer + deadlock avoidance
+go run ./concurrency/worker_pool/      # Bounded worker pool
+go run ./fundamentals/interfaces/      # Interface basics + nil trap
 
-# Default (lihat tag tersedia)
+# Default (lihat daftar contoh)
 go run ./fundamentals/
 
 # Test
@@ -71,11 +71,11 @@ go test -bench=. -benchmem ./performance/
 
 ## Cara Kerja
 
-Setiap file menggunakan **build tag** (`//go:build <tag>`) sehingga contoh bisa dijalankan secara independen:
+Setiap contoh ada di direktorinya sendiri — satu `main.go` per package:
 
 ```bash
-# file: transfer.go → //go:build transfer
-go run -tags=transfer ./interview/
+# interview/transfer/main.go → go run ./interview/transfer/
+go run ./interview/transfer/
 ```
 
 Lihat [dokumentasi lengkap](https://faisalaffan.github.io/gotrick/) untuk semua tag dan penjelasan.

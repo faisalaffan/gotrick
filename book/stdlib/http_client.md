@@ -5,11 +5,11 @@ GET dengan `http.DefaultClient`, custom client dengan timeout, `http.NewRequestW
 ## Cara Menjalankan
 
 ```bash
-go run -tags=http_client ./stdlib/
+go run ./stdlib/httpclient/ ./stdlib/
 ```
 
 ## Source Code
 
 ```go
-{{#include ../../stdlib/http_client.go}}
+{{#include ../../stdlib/httpclient/main.go}}
 ```
